@@ -11,15 +11,16 @@ def readfeed():
 
     feed = turfapi.fetchFeedFromDateOrderedLastFirst(lastTime)
     nrofFeedItems = len(feed)
-    print("Number of feed items", nrofFeedItems)
+#    print(datetime.now(), "Number of feed items", nrofFeedItems)
+    
+    if nrofFeedItems > 0:
+        for feedItem in feed:
+            lastHighestOrder += 1
+            takeoverTime = datetime.strptime(feedItem["time"], "%Y-%m-%dT%H:%M:%S+0000")
+            zoneId = feedItem["zone"]["id"]
+            feedRepository.insertTakever(connection, lastHighestOrder, takeoverTime, json.dumps(feedItem, ensure_ascii=False))
 
-    for feedItem in feed:
-        lastHighestOrder += 1
-        takeoverTime = datetime.strptime(feedItem["time"], "%Y-%m-%dT%H:%M:%S+0000")
-        zoneId = feedItem["zone"]["id"]
-        feedRepository.insertTakever(connection, lastHighestOrder, takeoverTime, json.dumps(feedItem, ensure_ascii=False))
-
-    feedRepository.updateLatestReadInfo(connection, takeoverTime, zoneId, lastHighestOrder)
+        feedRepository.updateLatestReadInfo(connection, takeoverTime, zoneId, lastHighestOrder)
     connection.commit()
     connection.close()
 
