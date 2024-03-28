@@ -1,5 +1,6 @@
 import requests
 import urllib.parse
+from urllib.error import HTTPError
 import json
 
 def fetchFeedFromDateOrderedLastFirst(lastDatetime):
