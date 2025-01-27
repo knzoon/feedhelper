@@ -5,7 +5,7 @@ import json
 
 def fetchFeedFromDateOrderedLastFirst(lastDatetime):
     datetimeString = lastDatetime.strftime("%Y-%m-%dT%H:%M:%S+0000")
-    encodedRequestStr = 'https://api.turfgame.com/unstable/feeds/takeover?afterDate=' + urllib.parse.quote(datetimeString)
+    encodedRequestStr = 'https://api.turfgame.com/v5/feeds/takeover?afterDate=' + urllib.parse.quote(datetimeString)
     try:
         response = requests.get(encodedRequestStr)
         response.raise_for_status()
